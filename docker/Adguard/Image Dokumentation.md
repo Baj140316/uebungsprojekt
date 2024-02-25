@@ -1,16 +1,20 @@
-Quick start
-Pull the Docker image
+Hier ist die Übersetzung:
 
-This command will pull the latest stable version:
+---
+
+Schnellstart
+Holen Sie sich das Docker-Image
+
+Mit diesem Befehl wird die neueste stabile Version heruntergeladen:
 
 docker pull adguard/adguardhome
 
-Create directories for persistent configuration and data
+Erstellen Sie Verzeichnisse für persistente Konfiguration und Daten
 
-The image exposes two volumes for data and configuration persistence. You should create a data directory on a suitable volume on your host system, e.g. /my/own/workdir, and a configuration directory on a suitable volume on your host system, e.g. /my/own/confdir.
-Create and run the container
+Das Image stellt zwei Volumes für die Daten- und Konfigurationspersistenz bereit. Sie sollten ein Datenverzeichnis auf einem geeigneten Volume auf Ihrem Host-System erstellen, z.B. /my/own/workdir, und ein Konfigurationsverzeichnis auf einem geeigneten Volume auf Ihrem Host-System erstellen, z.B. /my/own/confdir.
+Container erstellen und ausführen
 
-Use the following command to create a new container and run AdGuard Home:
+Verwenden Sie den folgenden Befehl, um einen neuen Container zu erstellen und AdGuard Home auszuführen:
 
 docker run --name adguardhome\
     --restart unless-stopped\
@@ -25,95 +29,99 @@ docker run --name adguardhome\
     -p 6060:6060/tcp\
     -d adguard/adguardhome
 
-Now you can open the browser and navigate to http://127.0.0.1:3000/ to control your AdGuard Home service.
+Nun können Sie den Browser öffnen und zu http://127.0.0.1:3000/ navigieren, um Ihren AdGuard Home-Dienst zu steuern.
 
-Don't forget to use your own data and config directories!
+Vergessen Sie nicht, Ihre eigenen Daten- und Konfigurationsverzeichnisse zu verwenden!
 
-Port mappings you might need:
+Port-Zuordnungen, die Sie benötigen könnten:
 
-    -p 53:53/tcp -p 53:53/udp: plain DNS.
+    -p 53:53/tcp -p 53:53/udp: einfaches DNS.
 
-    -p 67:67/udp -p 68:68/tcp -p 68:68/udp: add if you intend to use AdGuard Home as a DHCP server.
+    -p 67:67/udp -p 68:68/tcp -p 68:68/udp: hinzufügen, wenn Sie AdGuard Home als DHCP-Server verwenden möchten.
 
-    -p 80:80/tcp -p 443:443/tcp -p 443:443/udp -p 3000:3000/tcp: add if you are going to use AdGuard Home's admin panel as well as run AdGuard Home as an HTTPS/DNS-over-HTTPS server.
+    -p 80:80/tcp -p 443:443/tcp -p 443:443/udp -p 3000:3000/tcp: hinzufügen, wenn Sie das Admin-Panel von AdGuard Home verwenden möchten und AdGuard Home als HTTPS/DNS-over-HTTPS-Server ausführen.
 
-    -p 853:853/tcp: add if you are going to run AdGuard Home as a DNS-over-TLS server.
+    -p 853:853/tcp: hinzufügen, wenn Sie AdGuard Home als DNS-over-TLS-Server ausführen möchten.
 
-    -p 853:853/udp: add if you are going to run AdGuard Home as a DNS-over-QUIC server.
+    -p 853:853/udp: hinzufügen, wenn Sie AdGuard Home als DNS-over-QUIC-Server ausführen möchten.
 
-    -p 5443:5443/tcp -p 5443:5443/udp: add if you are going to run AdGuard Home as a DNSCrypt server.
+    -p 5443:5443/tcp -p 5443:5443/udp: hinzufügen, wenn Sie AdGuard Home als DNSCrypt-Server ausführen möchten.
 
-    -p 6060:6060/tcp: debugging profiles.
+    -p 6060:6060/tcp: Debugging-Profile.
 
-Client IPs
+Client-IPs
 
-If you want AdGuardHome to see the original client IPs as opposed to something like 172.17.0.1, you should add --network host to the list of options.
-Control the container
+Wenn Sie möchten, dass AdGuardHome die ursprünglichen Client-IPs sieht, anstatt etwas wie 172.17.0.1, sollten Sie --network host zur Liste der Optionen hinzufügen.
+Container steuern
 
     Start: docker start adguardhome
 
     Stop: docker stop adguardhome
 
-    Remove: docker rm adguardhome
+    Entfernen: docker rm adguardhome
 
-Update to a newer version
+Update auf eine neuere Version
 
-    Pull the new version from Docker Hub:
+    Holen Sie sich die neue Version von Docker Hub:
 
     docker pull adguard/adguardhome
 
-Stop and remove currently running container (assuming the container is named adguardhome):
+Stoppen und Entfernen des derzeit ausgeführten Containers (vorausgesetzt, der Container heißt adguardhome):
 
 docker stop adguardhome
 docker rm adguardhome
 
-    Create and start the container using the new image using the command from the previous section.
+    Erstellen und Starten des Containers mit dem neuen Image mit dem Befehl aus dem vorherigen Abschnitt.
 
-Running development builds
+Entwicklungsversionen ausführen
 
-If you want to be on the bleeding edge, you might want to run the image from the edge or beta tags. In order to use it, simply replace adguard/adguardhome with adguard/adguardhome:edge or adguard/adguardhome:beta in every command from the quick start. For example:
+Wenn Sie ganz vorn sein möchten, möchten Sie vielleicht das Image von den Edge- oder Beta-Tags ausführen. Um es zu verwenden, ersetzen Sie einfach adguard/adguardhome durch adguard/adguardhome:edge oder adguard/adguardhome:beta in jedem Befehl aus dem Schnellstart. Zum Beispiel:
 
 docker pull adguard/adguardhome:edge
 
-Additional configuration
+Zusätzliche Konfiguration
 
-Upon the first run, a file with the default values named AdGuardHome.yaml is created. You can modify the file while your AdGuard Home container is not running. Otherwise, any changes to the file will be lost because the running program will overwrite them.
+Beim ersten Start wird eine Datei mit den Standardwerten namens AdGuardHome.yaml erstellt. Sie können die Datei bearbeiten, solange Ihr AdGuard Home-Container nicht läuft. Andernfalls gehen Änderungen an der Datei verloren, weil das laufende Programm sie überschreibt.
 
-The settings are stored in the YAML format. The documentation describing all configurable parameters and their values is available on this page.
+Die Einstellungen werden im YAML-Format gespeichert. Die Dokumentation, die alle konfigurierbaren Parameter und ihre Werte beschreibt, ist auf dieser Seite verfügbar.
 HEALTHCHECK
 
-Between v0.107.27 and v0.107.33, the image used Docker-provided healthcheck mechanism. It was causing many issues and has been removed in v0.107.34. See issues #5711, #5713, and discussion #5939.
+Zwischen v0.107.27 und v0.107.33 verwendete das Image den von Docker bereitgestellten Healthcheck-Mechanismus. Dies führte zu vielen Problemen und wurde in v0.107.34 entfernt. Siehe Probleme #5711, #5713 und Diskussion #5939.
 
-If you need a healthcheck mechanism, it's better to create your own image tailored for your configuration. Implementations may use the special domain name healthcheck.adguardhome.test., expecting it to resolve into NODATA answer. It imposes restrictions on usage of this particular name, so specifying it within the blocked_hosts array under the dns section of configuration file will break the healthcheck. The allowed_clients and disallowed_clients properties should allow the healthcheck client IP as well.
-DHCP server
+Wenn Sie einen Healthcheck-Mechanismus benötigen, ist es besser, Ihr eigenes Image für Ihre Konfiguration anzupassen. Implementierungen können den speziellen Domainnamen healthcheck.adguardhome.test verwenden, in der Erwartung, dass er sich in eine NODATA-Antwort auflöst. Dies setzt Einschränkungen für die Verwendung dieses bestimmten Namens voraus, sodass die Angabe in der blocked_hosts-Array unter dem dns-Abschnitt der Konfigurationsdatei den Healthcheck unterbrechen wird. Die allowed_clients- und disallowed_clients-Eigenschaften sollten auch die IP des Healthcheck-Clients zulassen.
+DHCP-Server
 
-If you want to use AdGuardHome's DHCP server, you should pass --network host argument when creating the container:
+Wenn Sie den DHCP-Server von AdGuardHome verwenden möchten, sollten Sie das Argument --network host übergeben, wenn Sie den Container erstellen:
 
 docker run --name adguardhome --network host ...
 
-This option instructs Docker to use the host's network rather than a docker-bridged network. Note that port mapping with -p is not necessary in this case.
+Diese Option weist Docker an, das Netzwerk des Hosts anstelle eines docker-gebrückten Netzwerks zu verwenden. Beachten Sie, dass in diesem Fall keine Portzuordnung mit -p erforderlich ist.
 
-A note from the Docker documentation:
+Eine Anmerkung aus der Docker-Dokumentation:
 
-    The host networking driver only works on Linux hosts, and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.
+    Der Host-Netzwerk-Treiber funktioniert nur auf Linux-Hosts und wird nicht von Docker Desktop für Mac, Docker Desktop für Windows oder Docker EE für Windows Server unterstützt.
 
-resolved
+gelöst
 
-If you try to run AdGuardHome on a system where the resolved daemon is started, docker will fail to bind on port 53, because resolved daemon is listening on 127.0.0.53:53. Here's how you can disable DNSStubListener on your machine:
+Wenn Sie versuchen, AdGuardHome auf einem System auszuführen, auf dem der resolved-Daemon gestartet ist, wird Docker fehlschlagen, um auf Port 53 zu binden, weil der resolved-Daemon auf 127.0.0.53:53 hört. So deaktivieren Sie DNSStubListener auf Ihrem Rechner:
 
-    Deactivate DNSStubListener and update the DNS server address. Create a new file, /etc/systemd/resolved.conf.d/adguardhome.conf (creating the /etc/systemd/resolved.conf.d directory if needed) and add the following content to it:
+    De
+
+aktivieren Sie DNSStubListener und aktualisieren Sie die DNS-Serveradresse. Erstellen Sie eine neue Datei, /etc/systemd/resolved.conf.d/adguardhome.conf (Erstellen des Verzeichnisses /etc/systemd/resolved.conf.d, wenn erforderlich) und fügen Sie den folgenden Inhalt hinzu:
 
     [Resolve]
     DNS=127.0.0.1
     DNSStubListener=no
 
-    Specifying 127.0.0.1 as the DNS server address is necessary because otherwise the nameserver will be 127.0.0.53 which doesn't work without DNSStubListener.
+    Die Angabe von 127.0.0.1 als DNS-Serveradresse ist notwendig, da sonst der Nameserver 127.0.0.53 wäre, was ohne DNSStubListener nicht funktioniert.
 
-    Activate a new resolv.conf file:
+    Aktivieren Sie eine neue resolv.conf-Datei:
 
     mv /etc/resolv.conf /etc/resolv.conf.backup
     ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-    Stop DNSStubListener:
+    Stoppen Sie DNSStubListener:
 
     systemctl reload-or-restart systemd-resolved
+
+---
