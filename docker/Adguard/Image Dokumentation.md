@@ -1,7 +1,3 @@
-Hier ist die Übersetzung:
-
----
-
 Schnellstart
 Holen Sie sich das Docker-Image
 
