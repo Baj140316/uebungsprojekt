@@ -1,1 +1,88 @@
+version: '3.9'
+services:
+    adguardhome:
+        image: adguard/adguardhome
+        ports:
+            - '6060:6060/tcp'
+            - '5443:5443/udp'
+            - '5443:5443/tcp'
+            - '853:853/udp'
+            - '853:853/tcp'
+            - '33000:3000/tcp'
+            - '443:443/udp'
+            - '443:443/tcp'
+            - '80:80/tcp'
+            - '68:68/udp'
+            - '67:67/udp'
+            - '8053:8053/udp'
+            - '8053:8053/tcp'
+        volumes:
+            - ./adguard_config:/opt/adguardhome/conf
+            - ./adguard_data:/opt/adguardhome/work
+        restart: unless-stopped
+        container_name: adguardhome
+
+  db:
+    image: mariadb:10.6
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=sml12345
+      - MYSQL_PASSWORD=sml12345
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: nextcloud
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - db
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=sml12345
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+volumes:
+  prom_data:
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - ./homarr/configs:/app/data/configs
+      - ./homarr/icons:/app/public/icons
+      - ./homarr/data:/data
+    ports:
+      - '7575:7575'
 
